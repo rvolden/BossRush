@@ -157,6 +157,17 @@ namespace BossRush
                 c.Trigger();
                 c.EndCutscene();
             }
+
+            // toggle jefferson if you're in ava4/steadhone and are using the TE preset
+            if (OptionsMenu.stats.texts[OptionsMenu.stats.GetState()] == "teLowHasty") {
+                if (fightsInRun[FightCounter].ToString() == "ava4" || fightsInRun[FightCounter].ToString() == "steadhone") {
+                    save.SetNightState(true);
+                    JeffersonBackpack.instance.TurnOn();
+                } else {
+                    save.SetNightState(false);
+                    JeffersonBackpack.instance.TurnOff();
+                }
+            }
         }
 
         [HarmonyPatch(typeof(DamageableCharacter), "handleNoHealth")]
@@ -296,6 +307,10 @@ namespace BossRush
                 active = true;
                 startOnNextLoad = true;
                 ___saveFile.SetKeyState("cts_bus", true, true);
+
+            if (OptionsMenu.stats.texts[OptionsMenu.stats.GetState()] == "teLowHasty") {
+                ___saveFile.SetNightState(true);
+            }
             }
         }
 
